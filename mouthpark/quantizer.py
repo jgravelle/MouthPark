@@ -11,13 +11,16 @@ from __future__ import annotations
 
 from collections import defaultdict
 
-from .mapping import REST, phoneme_to_mouth
+from .mapping import REST, is_vowel, phoneme_to_mouth
 from .recognizer import PhonemeEvent
 
-# Allosaurus emits each phoneme as a short pulse (~45ms). Real speech holds
-# the mouth shape until the next phoneme, so we extend each event forward to
-# the start of the next event, unless the gap is longer than SILENCE_GAP (in
-# which case the speaker is genuinely silent and we emit a rest).
+# Allosaurus emits each phoneme as a short ~45ms pulse. Consonants are genuinely
+# brief, but vowels are typically held (an elongated "ohhhh" still emits one
+# pulse). So we extend each event to the next event's start, capped by:
+#   VOWEL_HOLD  — how long a vowel mouth may hold across silence (elongation)
+#   SILENCE_GAP — how long a consonant mouth may hold across silence
+# Beyond the cap, the frame falls through to REST (rendered as closed.png).
+VOWEL_HOLD = 2.0    # seconds
 SILENCE_GAP = 0.25  # seconds
 
 
@@ -54,14 +57,12 @@ def _frame_dominant_mouth(
 
 
 def _extend_events(events: list[PhonemeEvent]) -> list[PhonemeEvent]:
-    """Hold each phoneme until the next one starts, unless the gap exceeds SILENCE_GAP."""
+    """Hold each phoneme until the next; vowels hold longer than consonants."""
     out: list[PhonemeEvent] = []
     for i, ev in enumerate(events):
-        if i + 1 < len(events):
-            gap_end = events[i + 1].start
-        else:
-            gap_end = ev.end
-        hold_until = gap_end if (gap_end - ev.end) <= SILENCE_GAP else ev.end + SILENCE_GAP
+        next_start = events[i + 1].start if i + 1 < len(events) else float("inf")
+        cap = VOWEL_HOLD if is_vowel(ev.phoneme) else SILENCE_GAP
+        hold_until = min(next_start, ev.end + cap)
         new_end = max(ev.end, hold_until)
         out.append(PhonemeEvent(ev.phoneme, ev.start, new_end))
     return out

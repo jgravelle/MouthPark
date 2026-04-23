@@ -43,7 +43,7 @@ def _audio_duration(path: Path) -> float:
 @click.command()
 @click.argument("input_audio", type=click.Path(exists=True, dir_okay=False, path_type=Path))
 @click.argument("output", type=click.Path(dir_okay=False, path_type=Path), required=False)
-@click.option("--fps", default=12, show_default=True, type=int, help="Output frame rate (cap).")
+@click.option("--fps", default=18, show_default=True, type=int, help="Output frame rate (cap).")
 @click.option("--min-hold", default=2, show_default=True, type=int, help="Minimum frames a mouth shape must hold.")
 @click.option("--mouths-dir", default="mouths", show_default=True, type=click.Path(path_type=Path), help="Directory containing mouth PNGs.")
 @click.option("--keep-frames", default=None, type=click.Path(path_type=Path), help="Keep intermediate PNG sequence in this directory.")

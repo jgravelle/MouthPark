@@ -8,12 +8,17 @@ venv/
 dist/
 build/
 
-# Outputs & test artifacts
+# Generated outputs
 *.webm
 *.mp4
 *.mov
-test*.mp3
-test*.wav
+
+# Scratch audio (keep test.mp3 / test02.mp3 / test03.mp3 as regression samples)
+00.mp3
+00.wav
+
+# Claude session state
+.claude/
 
 # IDE
 .vscode/

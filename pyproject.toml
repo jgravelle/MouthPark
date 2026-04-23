@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mouthpark"
+version = "0.2.0"
+description = "South Park-style lip-synced mouth animation from an audio file."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "jgravelle" }]
+keywords = ["lip-sync", "animation", "phoneme", "south park", "webm", "alpha"]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Multimedia :: Video",
+    "Topic :: Multimedia :: Sound/Audio :: Speech",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "allosaurus>=1.0.2",
+    "Pillow>=10.0.0",
+    "click>=8.1.0",
+    "numpy>=1.24.0",
+]
+
+[project.scripts]
+mouthpark = "mouthpark.cli:main"
+
+[project.urls]
+Homepage = "https://github.com/jgravelle/MouthPark"
+Issues = "https://github.com/jgravelle/MouthPark/issues"
+
+[tool.setuptools.packages.find]
+include = ["mouthpark*"]
+
+[tool.setuptools.package-data]
+mouthpark = []

@@ -39,7 +39,7 @@ class MouthAssets:
 
     def get(self, mouth: str | None) -> Image.Image:
         if mouth is None:
-            return self.transparent()
+            return self.images["closed"]
         return self.images[mouth]
 
 
