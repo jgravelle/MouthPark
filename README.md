@@ -1,6 +1,6 @@
 # MouthPark
 
-South Park-style lip-synced mouth animation from an audio file.
+South Park-style lip-synced mouth animation from an audio file. 
 
 **Input:** an English-voice audio file (`.wav`, `.mp3`, anything ffmpeg can read).
 **Output:** a WebM video (VP9 + alpha) of the mouth only, on a transparent background, ready to composite onto your own character.
